@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wager Viz</title>
+
+    <!-- NOTE(abid): Vertex Shader -->
+    <script id="vertex-shader-2d" type="notjs">
+        attribute vec2 a_position;
+        uniform vec2 u_resolution;
+
+        void main() {
+            /* NOTE(abid): Convert from pixels to (0, 1). */
+            vec2 zero_to_one = a_position / u_resolution;
+            vec2 zero_to_two = zero_to_one * 2.0;
+            vec2 clip_space = zero_to_two - 1.0;
+
+            gl_Position = vec4(clip_space, 0, 1);
+        }
+    </script>
+
+    <!-- NOTE(abid): Fragment Shader -->
+    <script id="fragment-shader-2d" type="notjs">
+        precision mediump float;
+
+        uniform vec4 u_color;
+
+        void main() {
+            gl_FragColor = u_color;
+        }
+    </script>
+
+    <script src="webgl_utils.js" defer></script>
+    <script src="math_2d.js" defer></script>
+    <script src="index.js" defer></script>
+</head>
+
+<style>
+#visualization {
+    width: 98%;
+    border: 2px solid black;
+    padding: 2px;
+    border-radius: 10px;
+}
+</style>
+
+<body>
+    <h1>Wager Viz</h1>
+    <br>
+    <div class="slidecontainer">
+        <span>X</span>
+        <input type="range" min="0" max="600" value="0" class="slider" id="trans_x">
+    </div>
+    <div class="slidecontainer">
+        <span>Y</span>
+        <input type="range" min="0" max="600" value="0" class="slider" id="trans_y">
+    </div>
+    <canvas id="visualization"></canvas>
+</body>
+</html>
+
